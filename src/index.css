@@ -1,0 +1,76 @@
+:root {
+  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+
+  /* Hierarchical Space Navigator — forced dark theme */
+  --bg: #1a1c2e;
+  --panel: #222536;
+  --border: #2f3349;
+  --nav-border: #2a2e42;
+  --muted: #94a3b8;
+  --row-hover: rgba(59, 130, 246, 0.12);
+  --input-bg: #1e2130;
+  --btn-bg: #2a2e42;
+  --accent: #3b82f6;
+  --accent-fg: #ffffff;
+  --danger: #ef4444;
+  --danger-border: rgba(239, 68, 68, 0.45);
+  --danger-bg: rgba(239, 68, 68, 0.14);
+  --empty-icon: #64748b;
+  --badge-bg: rgba(148, 163, 184, 0.12);
+  --badge-border: rgba(148, 163, 184, 0.2);
+  --tree-line: rgba(148, 163, 184, 0.65);
+  --icon-add-bg: #4b5563;
+  --icon-add-bg-hover: #5c6578;
+  --icon-remove-bg: #ef4444;
+  --checkbox-checked: #f97316;
+  --checkbox-border: #64748b;
+  --checkbox-unchecked-bg: rgba(15, 23, 42, 0.35);
+  --selected-stream-row-bg: #2a3144;
+  --selected-stream-row-hover-bg: rgba(59, 130, 246, 0.1);
+  --selected-stream-row-hover-border: #3b82f6;
+  --panel-stripe: repeating-linear-gradient(
+    -11deg,
+    transparent,
+    transparent 10px,
+    rgba(59, 130, 246, 0.06) 10px,
+    rgba(59, 130, 246, 0.06) 11px
+  );
+
+  color: #ffffff;
+  background-color: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  color-scheme: dark;
+  height: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100%;
+  height: 100%;
+  background: var(--bg);
+}
+
+#root {
+  min-height: 100%;
+  height: 100%;
+}
+
+a {
+  color: var(--accent);
+}
