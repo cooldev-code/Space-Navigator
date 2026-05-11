@@ -543,15 +543,6 @@
   min-height: 0;
 }
 
-/* Scrollbar flush with the right edge of the Selected Streams card */
-.panel.selected-panel {
-  padding: 1rem 0 1rem 1.15rem;
-}
-
-.selected-panel > .panel-title {
-  padding-right: 1.15rem;
-}
-
 .selected-list {
   list-style: none;
   margin: 0;

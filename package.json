@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && npm run build --prefix server",
     "preview": "vite preview",
+    "start": "npm run start --prefix server",
     "server": "npm run dev --prefix server",
     "dev:full": "concurrently -n web,api -c cyan,magenta \"npm run dev\" \"npm run dev --prefix server\""
   },

@@ -2,8 +2,13 @@ import type { FlattenedSpacesData, Site } from "./types";
 
 const defaultBase = "/api/v1";
 
+/**
+ * Base URL for API calls in the browser.
+ * In dev, use same-origin `/api/v1` so Vite can proxy (avoids CORS). Do not point this at a
+ * remote host in development unless that host sends Access-Control-Allow-Origin for your dev origin.
+ */
 export function getApiBaseUrl(): string {
-  const raw = import.meta.env.VITE_DEV_API_PROXY_TARGET || "http://127.0.0.1:5050/api/v1";
+  const raw = import.meta.env.VITE_API_BASE_URL;
   if (typeof raw === "string" && raw.trim()) {
     return raw.replace(/\/$/, "");
   }

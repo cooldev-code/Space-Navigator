@@ -7,7 +7,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-/** Parent of `src/` or `dist/` — the `server/` package root */
+/** Parent of `src/` or `build/` — the `server/` package root */
 const serverRoot = join(__dirname, "..");
 
 export type Prepared = {
