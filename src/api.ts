@@ -3,7 +3,7 @@ import type { FlattenedSpacesData, Site } from "./types";
 const defaultBase = "/api/v1";
 
 export function getApiBaseUrl(): string {
-  const raw = import.meta.env.VITE_API_BASE_URL;
+  const raw = import.meta.env.VITE_DEV_API_PROXY_TARGET || "http://127.0.0.1:5050/api/v1";
   if (typeof raw === "string" && raw.trim()) {
     return raw.replace(/\/$/, "");
   }
