@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import toast from "react-hot-toast";
 import {
   createStream,
   deleteStream,
@@ -65,7 +66,6 @@ export default function App() {
     spaceName: string;
   } | null>(null);
 
-  const [mutationError, setMutationError] = useState<string | null>(null);
   const [pendingDeleteStreamIds, setPendingDeleteStreamIds] = useState<
     Set<number>
   >(new Set());
@@ -180,7 +180,6 @@ export default function App() {
   }, []);
 
   const toggleStream = useCallback((streamId: number) => {
-    setMutationError(null);
     setSelected((prev) => {
       const next = new Set(prev);
       if (next.has(streamId)) next.delete(streamId);
@@ -198,7 +197,6 @@ export default function App() {
       const optimistic: Stream = { id: tempId, name: name.trim() };
       const snapshot = cloneSpaces(spaces);
       setSpaces(insertStreamIntoSpaces(spaces, spaceId, optimistic));
-      setMutationError(null);
       try {
         const { stream } = await createStream(spaceId, name.trim());
         setSpaces((prev) =>
@@ -207,8 +205,12 @@ export default function App() {
             : prev
         );
         replaceSelectionId(tempId, stream.id);
+        toast.success(`Added “${stream.name}”`);
       } catch (err) {
         setSpaces(snapshot);
+        toast.error(
+          err instanceof Error ? err.message : "Could not add stream"
+        );
         throw err;
       }
     },
@@ -218,23 +220,30 @@ export default function App() {
   const handleDeleteStream = useCallback(
     (streamId: number) => {
       if (!spaces) return;
-      setMutationError(null);
       const snapshot = cloneSpaces(spaces);
       const spaceId = findSpaceIdForStream(spaces, streamId);
       if (spaceId === null) {
-        setMutationError("Could not locate stream to delete.");
+        toast.error("Could not locate stream to delete.");
         return;
       }
+
+      const streamName =
+        spaces
+          .flatMap((s) => s.streams)
+          .find((st) => st.id === streamId)?.name ?? "Stream";
 
       setPendingDeleteStreamIds((prev) => new Set(prev).add(streamId));
       setSpaces(removeStreamFromSpaces(spaces, streamId));
       removeFromSelection(streamId);
 
       void deleteStream(streamId)
+        .then(() => {
+          toast.success(`Removed “${streamName}”`);
+        })
         .catch((err: unknown) => {
           setSpaces(snapshot);
           addToSelection(streamId);
-          setMutationError(
+          toast.error(
             err instanceof Error ? err.message : "Failed to delete stream"
           );
         })
@@ -294,13 +303,11 @@ export default function App() {
           onToggleExpanded={toggleExpanded}
           selected={selected}
           onChangeSelected={(next) => {
-            setMutationError(null);
             setSelected(next);
             setSelectedOrder((order) => syncSelectedOrder(order, next));
           }}
           onToggleStream={toggleStream}
           onAddSpace={(spaceId, spaceName) => {
-            setMutationError(null);
             setAddModal({ spaceId, spaceName });
           }}
           onDeleteStream={handleDeleteStream}
@@ -359,12 +366,6 @@ export default function App() {
         </div>
       </header>
 
-      {mutationError ? (
-        <p className="banner error banner-global" role="status">
-          {mutationError}
-        </p>
-      ) : null}
-
       <main className="app-main layout-two">
         <section
           className="panel panel-card spaces-panel"
@@ -388,7 +389,6 @@ export default function App() {
           namesByStreamId={namesByStreamId}
           selectedOrder={selectedOrder}
           onRemove={(id) => {
-            setMutationError(null);
             toggleStream(id);
           }}
         />
